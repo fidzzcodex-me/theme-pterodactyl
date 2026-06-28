@@ -1,0 +1,862 @@
+/* ═══════════════════════════════════════════════════════════════
+   FlatDesign Theme for Pterodactyl — by fidzzcodex
+   Flat Design: solid colors, no gradients, no shadows, clean UI
+   Applies to: client panel only (dashboard, servers, account)
+   Excludes: /admin/* pages, console terminal
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Google Fonts ───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ── CSS Variables ──────────────────────────────────────────── */
+:root {
+  /* Accent */
+  --fd-blue:        #3882F6;
+  --fd-blue-dark:   #2563EB;
+  --fd-blue-light:  #60A5FA;
+  --fd-yellow:      #FACC15;
+  --fd-green:       #22C55E;
+  --fd-orange:      #F97316;
+  --fd-red:         #EF4444;
+
+  /* Dark mode bg */
+  --fd-bg:          #0F1117;
+  --fd-bg-2:        #161B27;
+  --fd-bg-3:        #1E2436;
+  --fd-bg-4:        #252D40;
+  --fd-border:      #2A3350;
+  --fd-border-2:    #334166;
+
+  /* Text */
+  --fd-text:        #F1F5F9;
+  --fd-text-muted:  #94A3B8;
+  --fd-text-dim:    #64748B;
+
+  /* Radius — flat design: kecil-menengah */
+  --fd-radius:      6px;
+  --fd-radius-md:   10px;
+  --fd-radius-lg:   14px;
+
+  /* Font */
+  --fd-font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+
+/* ── Light Mode Override ────────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --fd-bg:         #F8FAFC;
+    --fd-bg-2:       #FFFFFF;
+    --fd-bg-3:       #F1F5F9;
+    --fd-bg-4:       #E2E8F0;
+    --fd-border:     #CBD5E1;
+    --fd-border-2:   #94A3B8;
+    --fd-text:       #0F172A;
+    --fd-text-muted: #475569;
+    --fd-text-dim:   #94A3B8;
+  }
+}
+
+/* ── Manual dark toggle class (JS controlled) ───────────────── */
+body.fd-dark {
+  --fd-bg:         #0F1117;
+  --fd-bg-2:       #161B27;
+  --fd-bg-3:       #1E2436;
+  --fd-bg-4:       #252D40;
+  --fd-border:     #2A3350;
+  --fd-border-2:   #334166;
+  --fd-text:       #F1F5F9;
+  --fd-text-muted: #94A3B8;
+  --fd-text-dim:   #64748B;
+}
+
+body.fd-light {
+  --fd-bg:         #F8FAFC;
+  --fd-bg-2:       #FFFFFF;
+  --fd-bg-3:       #F1F5F9;
+  --fd-bg-4:       #E2E8F0;
+  --fd-border:     #CBD5E1;
+  --fd-border-2:   #94A3B8;
+  --fd-text:       #0F172A;
+  --fd-text-muted: #475569;
+  --fd-text-dim:   #94A3B8;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SKIP admin & console pages
+   ════════════════════════════════════════════════════════════════ */
+body[data-location*="/admin"] *,
+body[data-location*="/admin"] {
+  all: revert !important;
+}
+
+/* ── Global Reset (client only) ─────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fd-font) !important;
+  background-color: var(--fd-bg) !important;
+  color: var(--fd-text) !important;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Exclude console terminal from font override */
+.xterm,
+.xterm *,
+[class*="terminal"],
+[class*="console"] {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--fd-bg); }
+::-webkit-scrollbar-thumb { background: var(--fd-border-2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--fd-blue); }
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection {
+  background: var(--fd-blue);
+  color: #fff;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   NAVIGATION / SIDEBAR
+   ════════════════════════════════════════════════════════════════ */
+
+/* Top navbar */
+nav,
+[class*="Navigation"],
+[class*="navigation"],
+header {
+  background-color: var(--fd-bg-2) !important;
+  border-bottom: 2px solid var(--fd-border) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Nav links */
+nav a,
+[class*="Navigation"] a {
+  color: var(--fd-text-muted) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-decoration: none !important;
+  padding: 6px 12px !important;
+  border-radius: var(--fd-radius) !important;
+  transition: background 0.15s, color 0.15s !important;
+}
+
+nav a:hover,
+[class*="Navigation"] a:hover {
+  background-color: var(--fd-bg-4) !important;
+  color: var(--fd-text) !important;
+}
+
+nav a[class*="active"],
+nav a[aria-current],
+[class*="Navigation"] a[class*="active"] {
+  color: var(--fd-blue) !important;
+  background-color: rgba(56, 130, 246, 0.12) !important;
+}
+
+/* Brand / logo area */
+[class*="brand"],
+[class*="Brand"],
+[class*="logo"],
+[class*="Logo"] {
+  color: var(--fd-text) !important;
+  font-weight: 800 !important;
+  font-size: 16px !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MAIN LAYOUT
+   ════════════════════════════════════════════════════════════════ */
+
+main,
+[class*="ContentContainer"],
+[class*="PageContainer"],
+[class*="pageContainer"],
+[role="main"] {
+  background-color: var(--fd-bg) !important;
+  min-height: 100vh;
+}
+
+/* Page wrapper padding */
+[class*="Container"],
+[class*="container"] {
+  background-color: transparent !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CARDS & BOXES
+   ════════════════════════════════════════════════════════════════ */
+
+/* Server cards, stats boxes, any card component */
+[class*="ServerRow"],
+[class*="serverRow"],
+[class*="ServerCard"],
+[class*="StatusBar"],
+[class*="Box"],
+[class*="box"],
+[class*="Card"],
+[class*="card"],
+[class*="Panel"],
+[class*="panel"],
+[class*="ContentBox"],
+[class*="GreyRowBox"],
+[class*="greyRow"] {
+  background-color: var(--fd-bg-2) !important;
+  border: 1.5px solid var(--fd-border) !important;
+  border-radius: var(--fd-radius-md) !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s !important;
+}
+
+[class*="ServerRow"]:hover,
+[class*="ServerCard"]:hover,
+[class*="Card"]:hover {
+  border-color: var(--fd-blue) !important;
+}
+
+/* Server name */
+[class*="ServerRow"] p:first-child,
+[class*="serverName"],
+[class*="ServerName"] {
+  color: var(--fd-text) !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+}
+
+/* Server description / meta */
+[class*="ServerRow"] p:not(:first-child),
+[class*="serverDesc"],
+[class*="ServerDesc"] {
+  color: var(--fd-text-muted) !important;
+  font-size: 12px !important;
+}
+
+/* Stats bar (CPU, RAM, disk) */
+[class*="stats"],
+[class*="Stats"],
+[class*="usage"],
+[class*="Usage"] {
+  background-color: var(--fd-bg-3) !important;
+  border-radius: var(--fd-radius) !important;
+  color: var(--fd-text-muted) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   STATUS INDICATORS
+   ════════════════════════════════════════════════════════════════ */
+
+/* Online */
+[class*="online"],
+[class*="running"],
+[class*="Online"],
+[class*="Running"] {
+  color: var(--fd-green) !important;
+}
+
+/* Offline */
+[class*="offline"],
+[class*="stopped"],
+[class*="Offline"],
+[class*="Stopped"] {
+  color: var(--fd-text-dim) !important;
+}
+
+/* Starting / installing */
+[class*="starting"],
+[class*="installing"],
+[class*="Starting"],
+[class*="Installing"] {
+  color: var(--fd-yellow) !important;
+}
+
+/* Error / suspended */
+[class*="error"],
+[class*="suspended"],
+[class*="Error"],
+[class*="Suspended"] {
+  color: var(--fd-red) !important;
+}
+
+/* Status dot */
+[class*="StatusDot"],
+[class*="statusDot"],
+[class*="dot"] {
+  border-radius: 2px !important; /* flat: kotak, bukan circle */
+  box-shadow: none !important;
+}
+
+/* Progress bar */
+[class*="ProgressBar"],
+[class*="progressBar"],
+progress,
+[role="progressbar"] {
+  background-color: var(--fd-bg-4) !important;
+  border-radius: var(--fd-radius) !important;
+  border: none !important;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+
+[class*="ProgressBar"] > *,
+[class*="progressBar"] > *,
+[role="progressbar"] > * {
+  background-color: var(--fd-blue) !important;
+  border-radius: var(--fd-radius) !important;
+  box-shadow: none !important;
+  transition: width 0.3s ease !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BUTTONS
+   ════════════════════════════════════════════════════════════════ */
+
+button,
+[class*="Button"],
+[class*="button"],
+a[class*="btn"],
+[type="button"],
+[type="submit"] {
+  font-family: var(--fd-font) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  border-radius: var(--fd-radius) !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background 0.15s, transform 0.1s !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 8px 16px !important;
+}
+
+/* Primary */
+button[class*="primary"],
+[class*="Button"][class*="primary"],
+button[class*="Primary"],
+[class*="ButtonPrimary"],
+button[type="submit"] {
+  background-color: var(--fd-blue) !important;
+  color: #fff !important;
+}
+
+button[class*="primary"]:hover,
+[class*="ButtonPrimary"]:hover,
+button[type="submit"]:hover {
+  background-color: var(--fd-blue-dark) !important;
+}
+
+/* Secondary / ghost */
+button[class*="secondary"],
+[class*="ButtonSecondary"],
+button[class*="outline"],
+button[class*="ghost"] {
+  background-color: transparent !important;
+  color: var(--fd-text) !important;
+  border: 1.5px solid var(--fd-border-2) !important;
+}
+
+button[class*="secondary"]:hover,
+[class*="ButtonSecondary"]:hover {
+  background-color: var(--fd-bg-4) !important;
+  border-color: var(--fd-blue) !important;
+}
+
+/* Danger */
+button[class*="danger"],
+[class*="ButtonDanger"],
+button[class*="Danger"] {
+  background-color: var(--fd-red) !important;
+  color: #fff !important;
+}
+
+button:active,
+[class*="Button"]:active {
+  transform: scale(0.97) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   INPUTS & FORMS
+   ════════════════════════════════════════════════════════════════ */
+
+input,
+textarea,
+select,
+[class*="Input"],
+[class*="input"],
+[class*="Select"],
+[class*="select"],
+[class*="TextArea"] {
+  font-family: var(--fd-font) !important;
+  background-color: var(--fd-bg-3) !important;
+  color: var(--fd-text) !important;
+  border: 1.5px solid var(--fd-border) !important;
+  border-radius: var(--fd-radius) !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+[class*="Input"]:focus,
+[class*="Select"]:focus {
+  border-color: var(--fd-blue) !important;
+  box-shadow: none !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--fd-text-dim) !important;
+}
+
+label,
+[class*="Label"],
+[class*="label"] {
+  color: var(--fd-text-muted) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-bottom: 4px !important;
+  display: block;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TABLES
+   ════════════════════════════════════════════════════════════════ */
+
+table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+thead,
+[class*="TableHeader"] {
+  background-color: var(--fd-bg-3) !important;
+  border-bottom: 2px solid var(--fd-border) !important;
+}
+
+th {
+  color: var(--fd-text-muted) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.07em !important;
+  padding: 10px 16px !important;
+  text-align: left !important;
+}
+
+td {
+  color: var(--fd-text) !important;
+  font-size: 13px !important;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--fd-border) !important;
+}
+
+tbody tr:hover td {
+  background-color: var(--fd-bg-3) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MODALS & DIALOGS
+   ════════════════════════════════════════════════════════════════ */
+
+[class*="Modal"],
+[class*="modal"],
+[class*="Dialog"],
+[class*="dialog"],
+[role="dialog"] {
+  background-color: var(--fd-bg-2) !important;
+  border: 1.5px solid var(--fd-border) !important;
+  border-radius: var(--fd-radius-lg) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+  color: var(--fd-text) !important;
+}
+
+[class*="Overlay"],
+[class*="overlay"],
+[class*="Backdrop"],
+[class*="backdrop"] {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+/* Modal header */
+[class*="ModalHeader"],
+[class*="DialogHeader"] {
+  border-bottom: 1.5px solid var(--fd-border) !important;
+  padding-bottom: 12px !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ALERTS & FLASH MESSAGES
+   ════════════════════════════════════════════════════════════════ */
+
+[class*="Alert"],
+[class*="alert"],
+[class*="Flash"],
+[class*="flash"],
+[role="alert"] {
+  border-radius: var(--fd-radius) !important;
+  border-left: 4px solid var(--fd-blue) !important;
+  background-color: rgba(56, 130, 246, 0.1) !important;
+  color: var(--fd-text) !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 10px 14px !important;
+}
+
+[class*="Alert"][class*="success"],
+[class*="flash-success"] {
+  border-left-color: var(--fd-green) !important;
+  background-color: rgba(34, 197, 94, 0.1) !important;
+}
+
+[class*="Alert"][class*="error"],
+[class*="Alert"][class*="danger"],
+[class*="flash-error"] {
+  border-left-color: var(--fd-red) !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+[class*="Alert"][class*="warn"],
+[class*="flash-warn"] {
+  border-left-color: var(--fd-yellow) !important;
+  background-color: rgba(250, 204, 21, 0.1) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BREADCRUMBS & PAGINATION
+   ════════════════════════════════════════════════════════════════ */
+
+[class*="Breadcrumb"],
+[class*="breadcrumb"] {
+  color: var(--fd-text-dim) !important;
+  font-size: 12px !important;
+}
+
+[class*="Breadcrumb"] a,
+[class*="breadcrumb"] a {
+  color: var(--fd-text-muted) !important;
+  text-decoration: none !important;
+}
+
+[class*="Pagination"],
+[class*="pagination"] button,
+[class*="pagination"] a {
+  background-color: var(--fd-bg-3) !important;
+  border: 1.5px solid var(--fd-border) !important;
+  border-radius: var(--fd-radius) !important;
+  color: var(--fd-text) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+[class*="Pagination"] [class*="active"],
+[class*="pagination"] [class*="active"] {
+  background-color: var(--fd-blue) !important;
+  border-color: var(--fd-blue) !important;
+  color: #fff !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TAGS / BADGES
+   ════════════════════════════════════════════════════════════════ */
+
+[class*="Badge"],
+[class*="badge"],
+[class*="Tag"],
+[class*="tag"],
+[class*="Chip"],
+[class*="chip"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 2px 8px !important;
+  border-radius: var(--fd-radius) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: none !important;
+  border: 1.5px solid currentColor !important;
+  background-color: transparent !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   DARK MODE TOGGLE BUTTON (injected by JS)
+   ════════════════════════════════════════════════════════════════ */
+
+#fd-theme-toggle {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 9999 !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: var(--fd-radius) !important;
+  background-color: var(--fd-bg-2) !important;
+  border: 1.5px solid var(--fd-border) !important;
+  color: var(--fd-text) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 16px !important;
+  transition: background 0.15s, border-color 0.15s !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+#fd-theme-toggle:hover {
+  background-color: var(--fd-bg-4) !important;
+  border-color: var(--fd-blue) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ════════════════════════════════════════════════════════════════ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fd-font) !important;
+  color: var(--fd-text) !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+h1 { font-size: 24px !important; font-weight: 800 !important; }
+h2 { font-size: 20px !important; }
+h3 { font-size: 16px !important; }
+h4 { font-size: 14px !important; }
+
+p {
+  color: var(--fd-text-muted) !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+}
+
+a {
+  color: var(--fd-blue) !important;
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: var(--fd-blue-light) !important;
+}
+
+code,
+[class*="Code"],
+[class*="code"]:not([class*="console"]):not([class*="terminal"]) {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  background-color: var(--fd-bg-4) !important;
+  color: var(--fd-blue-light) !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  font-size: 12px !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SIDEBAR (file manager, settings)
+   ════════════════════════════════════════════════════════════════ */
+
+[class*="Sidebar"],
+[class*="sidebar"],
+aside {
+  background-color: var(--fd-bg-2) !important;
+  border-right: 1.5px solid var(--fd-border) !important;
+  box-shadow: none !important;
+}
+
+[class*="Sidebar"] a,
+aside a {
+  color: var(--fd-text-muted) !important;
+  border-radius: var(--fd-radius) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  transition: background 0.15s, color 0.15s !important;
+}
+
+[class*="Sidebar"] a:hover,
+aside a:hover {
+  background-color: var(--fd-bg-4) !important;
+  color: var(--fd-text) !important;
+}
+
+[class*="Sidebar"] a[class*="active"],
+aside a[aria-current],
+[class*="Sidebar"] a[class*="Active"] {
+  background-color: rgba(56, 130, 246, 0.12) !important;
+  color: var(--fd-blue) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FILE MANAGER
+   ════════════════════════════════════════════════════════════════ */
+
+[class*="FileManager"],
+[class*="fileManager"],
+[class*="FileRow"],
+[class*="fileRow"] {
+  background-color: var(--fd-bg-2) !important;
+  border-color: var(--fd-border) !important;
+}
+
+[class*="FileRow"]:hover,
+[class*="fileRow"]:hover {
+  background-color: var(--fd-bg-3) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LOADING SPINNER
+   ════════════════════════════════════════════════════════════════ */
+
+[class*="Spinner"],
+[class*="spinner"],
+[class*="Loading"],
+[class*="loading"] {
+  border-color: var(--fd-border) !important;
+  border-top-color: var(--fd-blue) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CONSOLE — UNTOUCHED
+   Selector ini memastikan console/terminal tidak kena override
+   ════════════════════════════════════════════════════════════════ */
+
+/* Console wrapper — revert semua override */
+[class*="console"],
+[class*="Console"],
+[class*="terminal"],
+[class*="Terminal"],
+.xterm,
+.xterm-viewport,
+.xterm-screen {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace !important;
+  background-color: revert !important;
+  color: revert !important;
+  border: revert !important;
+  border-radius: revert !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════════════════ */
+
+footer,
+[class*="Footer"],
+[class*="footer"] {
+  background-color: var(--fd-bg-2) !important;
+  border-top: 1.5px solid var(--fd-border) !important;
+  color: var(--fd-text-dim) !important;
+  font-size: 12px !important;
+  box-shadow: none !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MISC UTILITIES
+   ════════════════════════════════════════════════════════════════ */
+
+/* Dividers */
+hr,
+[class*="Divider"],
+[class*="divider"] {
+  border: none !important;
+  border-top: 1.5px solid var(--fd-border) !important;
+}
+
+/* Tooltips */
+[class*="Tooltip"],
+[class*="tooltip"] {
+  background-color: var(--fd-bg-4) !important;
+  color: var(--fd-text) !important;
+  border: 1px solid var(--fd-border) !important;
+  border-radius: var(--fd-radius) !important;
+  font-size: 12px !important;
+  box-shadow: none !important;
+}
+
+/* Dropdown menus */
+[class*="Dropdown"],
+[class*="dropdown"],
+[class*="Menu"],
+[class*="menu"] {
+  background-color: var(--fd-bg-2) !important;
+  border: 1.5px solid var(--fd-border) !important;
+  border-radius: var(--fd-radius-md) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+[class*="Dropdown"] a,
+[class*="Dropdown"] button,
+[class*="dropdown"] a,
+[class*="menu"] a,
+[class*="menu"] button {
+  color: var(--fd-text-muted) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  border-radius: 4px !important;
+}
+
+[class*="Dropdown"] a:hover,
+[class*="Dropdown"] button:hover,
+[class*="menu"] a:hover,
+[class*="menu"] button:hover {
+  background-color: var(--fd-bg-4) !important;
+  color: var(--fd-text) !important;
+}
+
+/* Switch / Toggle */
+[class*="Switch"],
+[class*="switch"],
+[class*="Toggle"],
+[role="switch"] {
+  background-color: var(--fd-bg-4) !important;
+  border-radius: var(--fd-radius) !important;
+  box-shadow: none !important;
+}
+
+[class*="Switch"][class*="checked"],
+[class*="Toggle"][aria-checked="true"],
+[role="switch"][aria-checked="true"] {
+  background-color: var(--fd-blue) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  h1 { font-size: 20px !important; }
+  h2 { font-size: 16px !important; }
+
+  [class*="ServerRow"],
+  [class*="Card"],
+  [class*="Box"] {
+    border-radius: var(--fd-radius) !important;
+  }
+
+  nav a,
+  [class*="Navigation"] a {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+  }
+}
