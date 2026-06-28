@@ -1,0 +1,15 @@
+name: "FlatDesign"
+identifier: "flatdesign"
+description: "Tema Flat Design untuk Pterodactyl — warna solid, bersih, tanpa basa-basi. Dark mode default dengan accent biru #3882F6."
+version: "1.0.0"
+target: "1.11.x"
+author: "fidzzcodex"
+website: "https://fidzzcodex.me"
+
+flags:
+  hasAdminView: false
+  hasClientView: true
+
+data:
+  load_css: ["css/flatdesign.css"]
+  load_js: ["js/flatdesign.js"]
